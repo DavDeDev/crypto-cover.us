@@ -1,6 +1,19 @@
 steps:
-- name: 'docker/compose:1.19.0'
+- name: 'docker/compose:1.29.2'  # Updated to a more recent version
   args: ['up', '-d']
+  
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'us-east4-docker.pkg.dev/crypto-cover-us/crypto-cover-us-repository', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
-images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+  args: ['tag', 'crypto-cover-us-image', 'us-east4-docker.pkg.dev/crypto-cover-us/crypto-cover-us-repository/crypto-cover-us-image:$COMMIT_SHA']
+  # Tag the image with the desired repository and version
+  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-east4-docker.pkg.dev/crypto-cover-us/crypto-cover-us-repository/crypto-cover-us-image:$COMMIT_SHA']
+  # Push the tagged image to the Artifacts Registry
+
+- name: 'grc.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'crypto-cover-us-service', '--image', 'us-east4-docker.pkg.dev/crypto-cover-us/crypto-cover-us-repository/crypto-cover-us-image:$COMMIT_SHA', '--region', 'us-east4']
+  
+images: 
+- 'us-east4-docker.pkg.dev/crypto-cover-us/crypto-cover-us-repository/crypto-cover-us-image:$COMMIT_SHA'
+# Define the pushed image for Cloud Build to store in the build details

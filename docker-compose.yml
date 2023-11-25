@@ -2,8 +2,9 @@
 version: '3'
 
 services:
-  image:
-    container_name: crypto-cover-us
+  app:
+    image: crypto-cover-us-image
+    container_name: crypto-cover-us-container
     build:
       context: .
       dockerfile: ./docker/Dockerfile
