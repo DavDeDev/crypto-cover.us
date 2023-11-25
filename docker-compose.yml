@@ -1,0 +1,14 @@
+# docker-compose.dev.yml
+version: '3'
+
+services:
+  next-app:
+    container_name: crypto-cover-us
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - .:/app/next-app
+    restart: always
+    ports:
+      - 3000:3000
