@@ -1,6 +1,6 @@
 steps:
 - name: 'docker/compose:1.19.0'
   args: ['up', '-d']
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['tag', 'crypto-cover-us', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
-# images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'us-east4-docker.pkg.dev/crypto-cover-us/crypto-cover-us-repository', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
