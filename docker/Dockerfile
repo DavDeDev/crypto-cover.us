@@ -1,28 +1,26 @@
-# docker/dev.Dockerfile
-FROM oven/bun:latest
+# Not using BUN 1.0.0 because of this issue: https://github.com/oven-sh/bun/issues/5007
+FROM node:latest
 
-WORKDIR /app/next-app
+WORKDIR /app/crypto-cover-us
 
 COPY package.json ./
-COPY bun.lockb ./
+COPY package-lock.json ./
 
-RUN bun install
+RUN npm install
 
 COPY . .
-
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at run time
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# for deploting the build version
+# For deploying the build version
+RUN npm run build
 
-# RUN bun next build
 # and
-# CMD bun next start
+CMD npm start
 
-# OR for sart Next.js in development, comment above two lines and uncomment below line
-
-CMD bun run dev
+# OR for starting Next.js in development, comment above two lines and uncomment below line
+# CMD npm run dev
 
 # Note: Don't expose ports here, Compose will handle that for us
